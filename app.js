@@ -27,28 +27,6 @@
     });
   }
 
-  function folderIdFrom(value) {
-    const text = String(value || "").trim();
-    if (!text) return "";
-    const fromUrl = text.match(/\/folders\/([a-zA-Z0-9_-]+)/);
-    if (fromUrl) return fromUrl[1];
-    return text;
-  }
-
-  function nameFromFile(filename) {
-    return filename
-      .replace(/\.[^.]+$/, "")
-      .replace(/[_-]+/g, " ")
-      .replace(/\s+/g, " ")
-      .trim();
-  }
-
-  function imageUrl(fileId) {
-    return `https://drive.google.com/thumbnail?id=${encodeURIComponent(
-      fileId
-    )}&sz=w1000`;
-  }
-
   function showMessage(text) {
     board.classList.add("is-message");
     board.replaceChildren();
@@ -101,62 +79,21 @@
     hand.forEach((card) => board.appendChild(renderCard(card)));
   }
 
-  async function listFolderImages(folderId, apiKey) {
-    const files = [];
-    let pageToken = "";
-
-    do {
-      const query = `'${folderId}' in parents and trashed = false and mimeType contains 'image/'`;
-      const params = new URLSearchParams({
-        q: query,
-        fields: "nextPageToken,files(id,name,mimeType)",
-        pageSize: "1000",
-        key: apiKey,
-        supportsAllDrives: "true",
-        includeItemsFromAllDrives: "true",
-      });
-      if (pageToken) params.set("pageToken", pageToken);
-
-      const response = await fetch(
-        `https://www.googleapis.com/drive/v3/files?${params.toString()}`
-      );
-      const data = await response.json();
-      if (!response.ok) {
-        const reason = data.error && data.error.message;
-        throw new Error(reason || "Could not read the Drive folder.");
-      }
-
-      files.push(...(data.files || []));
-      pageToken = data.nextPageToken || "";
-    } while (pageToken);
-
-    return files.map((file) => ({
-      id: file.id,
-      name: nameFromFile(file.name) || "Mystery",
-      image: imageUrl(file.id),
-    }));
-  }
-
   async function loadPool() {
-    const config = window.DRIVE_CONFIG || {};
-    const folderId = folderIdFrom(config.folder);
-    const apiKey = String(config.apiKey || "").trim();
-
-    if (!folderId || !apiKey) {
-      showMessage(
-        "Add your Google Drive folder link and API key in config.js to load the cards."
-      );
-      return;
-    }
-
     showMessage("Shuffling the deck…");
     redrawButton.disabled = true;
 
     try {
-      pool = await listFolderImages(folderId, apiKey);
+      const response = await fetch("/api/cards");
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || "Could not load the card deck.");
+      }
+      pool = data.cards || [];
       loaded = true;
       drawHand();
     } catch (error) {
+      loaded = false;
       showMessage(
         error.message ||
           "Could not load images from Google Drive. Check that the folder is shared with anyone who has the link."
