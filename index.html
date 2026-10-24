@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guess Who!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Nunito:wght@500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="snow" aria-hidden="true"></div>
+
+    <header class="header">
+      <p class="eyebrow">A little holiday draw</p>
+      <h1>Guess Who!</h1>
+      <p class="lede">
+        Ten cards are drawn at random. Click a card to flip it and see who it
+        is.
+      </p>
+      <button type="button" id="redraw" class="redraw">Draw again</button>
+    </header>
+
+    <main>
+      <section id="board" class="board" aria-label="Drawn cards"></section>
+    </main>
+
+    <script src="./config.js"></script>
+    <script src="./app.js"></script>
+  </body>
+</html>
