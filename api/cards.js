@@ -13,6 +13,7 @@ module.exports = async (req, res) => {
     res.statusCode = 200;
     res.setHeader("Content-Type", "application/json");
     res.end(JSON.stringify({ cards }));
+    console.log("cards", cards);
   } catch (error) {
     res.statusCode = 500;
     res.setHeader("Content-Type", "application/json");
