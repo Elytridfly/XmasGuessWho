@@ -12,5 +12,5 @@
  */
 window.DRIVE_CONFIG = {
   folder: "https://drive.google.com/drive/folders/1mBL5NpYG33X1LCzzukkcmjQglVLXmsKe?usp=sharing",
-  apiKey: "",
+  apiKey: "129695273275-2r4o17s52r8p1vfhdvpj10l6nkvhpre9.apps.googleusercontent.com",
 };
