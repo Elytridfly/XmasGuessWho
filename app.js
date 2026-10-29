@@ -38,6 +38,8 @@
 
   function renderCard(card) {
     const button = document.createElement("button");
+    const image = new Image();
+
     button.type = "button";
     button.className = "card";
     button.setAttribute("aria-pressed", "false");
@@ -56,6 +58,11 @@
         </div>
       </div>
     `;
+
+    image.onload = () => {
+      button.style.aspectRatio = `${image.naturalWidth} / ${image.naturalHeight}`;
+    };
+    image.src = card.image;
 
     button.addEventListener("click", () => {
       const flipped = button.classList.toggle("is-flipped");
