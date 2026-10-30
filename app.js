@@ -39,6 +39,8 @@
   function renderCard(card) {
     const button = document.createElement("button");
     const image = new Image();
+    const stretchCard = card.name.startsWith("!");
+    const displayName = stretchCard ? card.name.slice(1) : card.name;
 
     button.type = "button";
     button.className = "card";
@@ -52,8 +54,7 @@
         </div>
         <div class="face back">
           <div>
-            <p>Revealed</p>
-            <h2>${escapeHtml(card.name)}</h2>
+            <h3>${escapeHtml(displayName)}</h3>
           </div>
         </div>
       </div>
@@ -66,8 +67,9 @@
 
     button.addEventListener("click", () => {
       const flipped = button.classList.toggle("is-flipped");
+      button.classList.toggle("is-tall", stretchCard && flipped);
       button.setAttribute("aria-pressed", String(flipped));
-      button.setAttribute("aria-label", flipped ? card.name : "Hidden card");
+      button.setAttribute("aria-label", flipped ? displayName : "Hidden card");
     });
 
     return button;

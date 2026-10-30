@@ -139,6 +139,8 @@ h1 {
 
 .card {
   aspect-ratio: 3 / 4.2;
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  transform-origin: center;
   perspective: 1200px;
   cursor: pointer;
   border: 0;
@@ -166,6 +168,24 @@ h1 {
 
 .card.is-flipped .card-inner {
   transform: rotateY(180deg);
+}
+
+.card.is-tall .card-inner {
+  min-height: 0;
+}
+
+.card.is-tall.is-flipped {
+  position: relative;
+  z-index: 5;
+  transform: scaleY(1.31);
+}
+
+.card.is-tall.is-flipped .back h3 {
+  transform: scaleY(0.763);
+}
+
+.card.is-tall.is-flipped {
+  grid-row: auto;
 }
 
 .face {
@@ -217,13 +237,27 @@ h1 {
       transparent 10px 20px
     ),
     linear-gradient(180deg, #7a1828, #4a1018 55%, #2a1214);
+  overflow-wrap: anywhere;
 }
 
-.back h2 {
+/* .back h3 {
+  margin: 0;
+  font-family: "Nunito", system-ui, sans-serif;
+  font-size: clamp(1.05rem, 2vw, 1.45rem);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  color: var(--gold-soft);
+  overflow-wrap: anywhere;
+} */
+
+.back h3 {
   margin: 0;
   font-family: "Great Vibes", cursive;
-  font-size: clamp(1.7rem, 3vw, 2.4rem);
+  font-size: clamp(1.7rem, 5vw, 1.45rem);
   font-weight: 400;
+  letter-spacing: -0.01em;
+  line-height: 1;
   color: var(--gold-soft);
   line-height: 1.15;
 }
